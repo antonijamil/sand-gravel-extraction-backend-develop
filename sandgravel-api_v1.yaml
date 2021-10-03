@@ -1,0 +1,488 @@
+openapi: 3.0.1
+info:
+  title: Open API of SandGravelExtraction
+  description: >-
+    This is an OpenAPI for digitizing a form for sand and gravel extraction. 
+    You can find out more about     Swagger at
+    [http://swagger.io](http://swagger.io) or on [irc.freenode.net,
+    #swagger](http://swagger.io/irc/).
+  version: 0.0.1
+tags:
+  - name: Register
+    description: Operations related to the register.
+  - name: Vessels
+    description: Operations related to vessels.
+  - name: Concession Holders
+    description: Operations related to concession holders.
+  - name: Loading Sites
+    description: Operations related to loading sites.
+paths:
+  /register-entries:
+    post:
+      tags:
+        - Register
+      summary: Add a new entry to the register
+      operationId: createRegisterEntry
+      requestBody:
+        description: The register entry object that needs to be added to the register
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      x-codegen-request-body-name: body
+    get:
+      tags:
+        - Register
+      summary: Find register entries
+      operationId: getRegisterEntries
+      parameters:
+        - name: page
+          in: query
+          description: the number of the page
+          schema:
+            type: integer
+            default: 0
+        - name: pageSize
+          in: query
+          description: the number of registers per page
+          schema:
+            type: integer
+            default: 10
+            enum:
+              - 10
+              - 25
+              - 50
+        - name: sort
+          in: query
+          description: the sort of the table
+          schema:
+            type: string
+            default: tripNumber
+        - name: captainId
+          in: query
+          description: ID of the captain, for captain view
+          schema:
+            type: integer
+        - name: id
+          in: query
+          description: id of the form
+          schema:
+            type: integer
+            format: int64
+        - name: tripNumber
+          in: query
+          description: form must contain this number of travel
+          schema:
+            type: integer
+        - name: shipId
+          in: query
+          description: form with this vessel
+          schema:
+            type: integer
+        - name: concessionHolderId
+          in: query
+          description: form with this concession
+          schema:
+            type: integer
+        - name: loadingSiteId
+          in: query
+          description: form must load at this loadingSite
+          schema:
+            type: integer
+        - name: startDateTime
+          in: query
+          description: the start date of the search
+          schema:
+            type: string
+            format: date-time
+        - name: stopDateTime
+          in: query
+          description: the end date of the search
+          schema:
+            type: string
+            format: date-time
+        - name: loadedQuantity
+          in: query
+          description: form with this quantiy
+          schema:
+            type: integer
+
+#        - name: deviantVolume
+#          in: query
+#          description: Comment on the volume difference, if any between ship capacity volume and loaded volume.
+#          schema:
+#            type: string
+#        - name: unloading
+#          in: query
+#          description: unloading data for this register entry
+#          schema:
+#            type: string
+        - name: destinationCountry
+          in: query
+          description: destination country for this register entry
+          schema:
+            type: string
+
+        - name: destination
+          in: query
+          description: destination for this register entry 
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ListRespone'
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Register'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - api_key: []
+  '/register-entries/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: id of the register entry
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Register
+      summary: get the register of the entryId
+      operationId: getRegisterEntry
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Register
+      summary: Amend an existing register entry
+      operationId: updateRegisterEntry
+      requestBody:
+        description: sandDrainForm object that needs to be added to the register
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      x-codegen-request-body-name: body
+  /ships:
+    get:
+      tags:
+        - Vessels
+      summary: Find an array of the vessels
+      operationId: getBoats
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Vessel'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - api_key: []
+  /concession-holders:
+    get:
+      tags:
+        - Concession Holders
+      summary: Find an array of the concessions holder
+      operationId: getConcessions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConcessionHolder'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - api_key: []
+  /loading-sites:
+    get:
+      tags:
+        - Loading Sites
+      summary: Get an array of all loading sites
+      operationId: getLoadingSites
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LoadingSite'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - api_key: []
+components:
+  schemas:
+    ListRespone:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: Page of the request
+        pageSize:
+          type: integer
+          description: Page size of the request.
+        total:
+          type: integer
+          description: The total number of items that match the request.
+    Register:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Number to identify the register
+        captain:
+          $ref: '#/components/schemas/User'
+          description: Captain in charge of the extraction
+        ship:
+          $ref: '#/components/schemas/Vessel'
+          description: Vessel in charge of the extraction
+        concessionHolder:
+          $ref: '#/components/schemas/ConcessionHolder'
+          description: Concession holder in charge of the extraction
+        tripNumber:
+          type: integer
+          description: Number to identify the travel of the vessel;
+        startDateTime:
+          type: string
+          format: date-time
+          description: date and time of start of extraction
+        stopDateTime:
+          type: string
+          format: date-time
+          description: date and time of stop of extraction
+        loadingSite:
+          $ref: '#/components/schemas/LoadingSite'
+        loadedQuantity:
+          type: integer
+        deviantVolume:
+          type: string
+          description: Explanation about the loading
+        unloadings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Unloading'
+      xml:
+        name: Register
+    Unloading:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: unloading id
+        unloadedVolume:
+          type: integer
+          description: Quantity unloaded
+        unloadingPlace:
+          type: string
+          description: vessel where sand/gravel is unloaded
+        destination:
+          type: string
+          description: Destination of the sand/gravel
+        destinationCountry:
+          type: string
+          description: The country of the destination of the sand/gravel
+      xml:
+        name: Unloading
+    LoadingSite:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        status:
+          type: string
+      xml:
+        name: Unloading
+      description: Site where the captain can extract the sand/gravel
+    Ship:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ship identification number in DB
+        IMO:
+          type: integer
+          description: Ship identification number
+        name:
+          type: string
+        hopperVolume:
+          type: integer
+          description: Maximum loading volume of the vessel;
+      xml:
+        name: Ship
+    ConcessionHolder:
+      type: object
+      properties:
+        concessionHolderNumber:
+          type: integer
+        name:
+          type: string
+      xml:
+        name: ConcessionHolder
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        role:
+          type: string
+          enum:
+            - captain
+            - concessionHolder
+      xml:
+        name: User
+    Error:
+      type: object
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: string
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+  responses:
+    BadRequest:
+      description: The syntax of the query is incorrect
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication is required to access the resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: >-
+        Authentication has been accepted but the access rights do not allow the
+        client to access the resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
