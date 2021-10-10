@@ -21,10 +21,7 @@ public class CaptainController {
         this.captainService = captainService;
     }
 
-    @GetMapping(path = "/basicauth")
-    public AuthenticationBean basicauth() {
-        return new AuthenticationBean("You are authenticated");
-    }
+
     @GetMapping(value = "/captains2/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Captain>getCaptainByNameTest(@PathVariable("name") String name) {
         return ResponseEntity.ok(this.captainService.getCaptainByNameTest(name));

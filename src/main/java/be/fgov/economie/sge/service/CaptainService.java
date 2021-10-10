@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Bean
 public class CaptainService {
     private final CaptainRepository captainRepository;
     private final CaptainMapper captainMapper;
