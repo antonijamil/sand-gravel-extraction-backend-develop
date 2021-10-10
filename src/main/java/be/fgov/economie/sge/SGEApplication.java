@@ -30,24 +30,6 @@ public class SGEApplication {
         SpringApplication.run(SGEApplication.class, args);
     }
 
-    public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().
-                    disable()
-                    .authorizeRequests()
-                    .antMatchers(HttpMethod.OPTIONS, "/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-                    .and()
-                    .httpBasic()
-                    .and()
-                    .cors();
-        }
-    }
-
     @Bean
     public ServletWebServerFactory servletContainer() {
         // Enable SSL Trafic

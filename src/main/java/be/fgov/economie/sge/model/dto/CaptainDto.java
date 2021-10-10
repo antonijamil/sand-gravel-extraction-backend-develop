@@ -12,8 +12,6 @@ public class CaptainDto {
     private Integer id;
     private String name;
     private String address;
-    private String username;
-    private String password;
 
     /*private List<CaptainDto> captainDtos = new ArrayList<>();
     public void setCaptainDto(List<CaptainDto> captains) {

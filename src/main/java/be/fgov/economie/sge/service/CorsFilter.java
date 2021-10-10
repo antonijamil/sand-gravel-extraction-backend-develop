@@ -1,3 +1,4 @@
+
 package be.fgov.economie.sge.service;
 
 import org.springframework.core.Ordered;
@@ -36,7 +37,3 @@ public class CorsFilter
     }
 
 }
-
-
-
-

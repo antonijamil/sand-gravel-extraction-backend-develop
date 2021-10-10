@@ -20,9 +20,6 @@ public class Captain {
     @Column(name = "address")
     private String address;
     @Column(name = "username")
-    private String username;
-    @Column(name = "password")
-    private String password;
 
     @OneToMany(mappedBy = "captain")
     private List<RegisterEntry> registerEntries;
