@@ -6,6 +6,8 @@ import be.fgov.economie.sge.model.dto.CaptainDto;
 import be.fgov.economie.sge.model.dto.UserDto;
 import be.fgov.economie.sge.repository.UserRepository;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,11 +29,26 @@ public class UserService {
         return usersDto;
     }
 
-    public UserDto saveUser (UserDto userDto) {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public User registerNewUser(UserDto userDto) {
+        User user = new User();
+        user.setName(userDto.getName());
+        user.setAddress(userDto.getAddress());
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setActive(userDto.getActive());
+        user.setRoles(userDto.getRoles());
+        user.setPermissions((userDto.getPermissions()));
+        return userRepository.save(user);
+    }
+
+    /*public UserDto saveUser (UserDto userDto) {
 
         User user = userMapper.userDtoToUser(userDto);
         User userSaved = this.userRepository.save(user);
 
         return userMapper.userToUserDto(userSaved);
-    }
+    }*/
 }
