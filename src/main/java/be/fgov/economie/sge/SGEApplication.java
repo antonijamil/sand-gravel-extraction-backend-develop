@@ -30,24 +30,6 @@ public class SGEApplication {
         SpringApplication.run(SGEApplication.class, args);
     }
 
-    public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().
-                    disable()
-                    .authorizeRequests()
-                    .antMatchers(HttpMethod.OPTIONS, "/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-                    .and()
-                    .httpBasic()
-                    .and()
-                    .cors();
-        }
-    }
-
     @Bean
     public ServletWebServerFactory servletContainer() {
         // Enable SSL Trafic
@@ -67,7 +49,6 @@ public class SGEApplication {
 
         return tomcat;
 }
-
     /*
     We need to redirect from HTTP to HTTPS. Without SSL, this application used
     port 8082. With SSL it will use port 8443. So, any request for 8082 needs to be

@@ -31,12 +31,10 @@ public class CorsFilter
         response.setHeader("Access-Control-Max-Age","1800");
         response.setHeader("Access-Control-Allow-Credentials","true");
 
-        if(!request.getMethod().equals("OPTIONS"))
+
+    if(!request.getMethod().equals("OPTIONS"))
             filterChain.doFilter(request, response);
+
     }
 
 }
-
-
-
-
