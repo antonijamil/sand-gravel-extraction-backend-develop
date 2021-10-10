@@ -3,6 +3,7 @@ package be.fgov.economie.sge.controller;
 import be.fgov.economie.sge.model.Captain;
 import be.fgov.economie.sge.model.dto.CaptainDto;
 import be.fgov.economie.sge.model.dto.ConcessionHolderDto;
+import be.fgov.economie.sge.service.AuthenticationBean;
 import be.fgov.economie.sge.service.CaptainService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

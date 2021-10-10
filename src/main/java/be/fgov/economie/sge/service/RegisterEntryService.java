@@ -88,7 +88,6 @@ public class RegisterEntryService {
             unloading.setRegisterEntry(saved);
             unloadingRepository.save(unloading);
         }
-
         return registerEntryMapper.registerEntryToDto(saved);
     }
 
