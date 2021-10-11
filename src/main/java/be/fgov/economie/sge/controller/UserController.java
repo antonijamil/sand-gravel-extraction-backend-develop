@@ -34,7 +34,7 @@ public class UserController {
     @PostMapping(value = "/new-user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> saveUser(@RequestBody UserDto userDto) {
 
-        //UserDto createdUserDto = userService.registerNewUser(userDto);
-        return ResponseEntity.ok(userDto);
+        UserDto createdUserDto = userService.registerNewUser(userDto);
+        return ResponseEntity.ok(createdUserDto);
 
     }}

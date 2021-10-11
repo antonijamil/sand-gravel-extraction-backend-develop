@@ -29,19 +29,23 @@ public class UserService {
         return usersDto;
     }
 
-    @Autowired
+
     private PasswordEncoder passwordEncoder;
 
-    public User registerNewUser(UserDto userDto) {
-        User user = new User();
-        user.setName(userDto.getName());
+    public UserDto registerNewUser(UserDto userDto) {
+        User user = userMapper.userDtoToUser(userDto);
+        /*user.setName(userDto.getName());
         user.setAddress(userDto.getAddress());
         user.setUsername(userDto.getUsername());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setActive(userDto.getActive());
         user.setRoles(userDto.getRoles());
-        user.setPermissions((userDto.getPermissions()));
-        return userRepository.save(user);
+        user.setPermissions((userDto.getPermissions()));*/
+        System.out.println("************");
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        User saved = this.userRepository.save(user);
+
+        return userMapper.userToUserDto(saved);
     }
 
     /*public UserDto saveUser (UserDto userDto) {
