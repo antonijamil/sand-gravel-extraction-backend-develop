@@ -22,7 +22,7 @@ import java.util.Date;
 @Table(name="register_entry", schema = "sand_gravel")
 public class RegisterEntry {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
     @Column(name = "trip_number")
