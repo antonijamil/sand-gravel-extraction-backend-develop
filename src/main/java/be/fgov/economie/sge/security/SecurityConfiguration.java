@@ -4,6 +4,7 @@ import be.fgov.economie.sge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -30,8 +31,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 inMemoryConfigurer()
                 .withUser("admin").password(passwordEncoder().encode("password")).roles("admin")
+                //.withUser("admin").password("{noop}password").roles("admin")
                 .and()
                 .withUser("dan").password(passwordEncoder().encode("password")).roles("captain")
+                //.withUser("dan").password("{noop}password").roles("captain")
         .and()
         .configure(auth);
                 auth.authenticationProvider(authProvider());
@@ -45,6 +48,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/users").hasRole("admin")
+                .antMatchers(HttpMethod.GET, "/ships").hasRole("captain")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
@@ -58,14 +63,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         authProvider.setUserDetailsService(this.userPrincipalDetailsService);
         return authProvider;
     }
-        /*@Bean
-        PasswordEncoder passwordEncoder() {
-            return new BCryptPasswordEncoder();
-     }*/
-        @Bean
-        public PasswordEncoder passwordEncoder() {
-            return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        }
+
+    /*@Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }*/
+
+    /*@Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }*/
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 
 
 }
