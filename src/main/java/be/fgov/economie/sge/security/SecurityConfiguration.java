@@ -1,6 +1,5 @@
 package be.fgov.economie.sge.security;
 
-import be.fgov.economie.sge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,10 +11,9 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -48,13 +46,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/users").hasRole("admin")
-                .antMatchers(HttpMethod.GET, "/ships").hasRole("captain")
-                .antMatchers(HttpMethod.POST, "/register-entries").hasRole("captain")
+                //.antMatchers(HttpMethod.POST, "/users").hasRole("admin")
+                //.antMatchers(HttpMethod.GET, "/ships").hasRole("captain")
+                //.antMatchers(HttpMethod.POST, "/register-entries/**").hasRole("captain")
+                //.antMatchers(HttpMethod.GET, "/loading-sites/**").hasRole("captain")
+                //.antMatchers(HttpMethod.GET, "/ships/**").hasRole("captain")
+                //.antMatchers(HttpMethod.GET, "/concession-holders/**").hasRole("captain")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
         ;
+
+
+/*http
+                .requiresChannel().anyRequest().requiresSecure();*/
+
+
     }
 
     @Bean
@@ -65,12 +72,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
-    /*@Bean
+/*@Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }*/
 
-    /*@Bean
+/*@Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }*/
@@ -80,7 +87,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-
 }
-
-

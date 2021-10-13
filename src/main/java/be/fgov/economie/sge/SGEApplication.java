@@ -17,6 +17,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @SpringBootApplication(scanBasePackages = {"be.fgov.economie.sge"})
 //@EnableJpaRepositories("be.fgov.economie.soctarcore.persistence.repositories")
@@ -30,7 +31,7 @@ public class SGEApplication {
         SpringApplication.run(SGEApplication.class, args);
     }
 
-    @Bean
+    /*@Bean
     public ServletWebServerFactory servletContainer() {
         // Enable SSL Trafic
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
@@ -51,15 +52,30 @@ public class SGEApplication {
 }
     /*
     We need to redirect from HTTP to HTTPS. Without SSL, this application used
-    port 8082. With SSL it will use port 8443. So, any request for 8082 needs to be
+    port 8080. With SSL it will use port 8443. So, any request for 8080 needs to be
     redirected to HTTPS on 8443.
      */
-    private Connector httpToHttpsRedirectConnector() {
+    /*private Connector httpToHttpsRedirectConnector() {
         Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
         connector.setScheme("http");
-        connector.setPort(8082);
+        connector.setPort(8080);
         connector.setSecure(false);
-        connector.setRedirectPort(6942);
+        connector.setRedirectPort(8443);
         return connector;
-    }
+    }*/
+
+    /*public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins(
+                        "http://localhost:4200"
+                )
+                .allowedMethods(
+                        "GET",
+                        "PUT",
+                        "POST",
+                        "DELETE",
+                        "PATCH",
+                        "OPTIONS"
+                );
+    }*/
 }
