@@ -18,9 +18,10 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserService (UserRepository userRepository) {
+    public UserService (UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = Mappers.getMapper(UserMapper.class);
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserDto> getUsers() {

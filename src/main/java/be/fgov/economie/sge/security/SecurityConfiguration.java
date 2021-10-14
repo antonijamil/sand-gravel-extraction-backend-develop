@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -18,28 +20,25 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private UserPrincipalDetailsService userPrincipalDetailsService;
+    private UserDetailsService userDetailsService;
 
-    public SecurityConfiguration(UserPrincipalDetailsService userPrincipalDetailsService) {
-        this.userPrincipalDetailsService = userPrincipalDetailsService;
+    public SecurityConfiguration(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth, AuthenticationProvider provider) throws Exception {
-
-                inMemoryConfigurer()
+        auth.authenticationProvider(authProvider());
+        auth.inMemoryAuthentication()
                 .withUser("admin").password(passwordEncoder().encode("password")).roles("admin")
                 //.withUser("admin").password("{noop}password").roles("admin")
                 .and()
-                .withUser("dan").password(passwordEncoder().encode("password")).roles("captain")
+                .withUser("dan").password(passwordEncoder().encode("password")).roles("captain");
                 //.withUser("dan").password("{noop}password").roles("captain")
-        .and()
-        .configure(auth);
-                auth.authenticationProvider(authProvider());
     }
-    private InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder> inMemoryConfigurer() {
+    /*private InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder> inMemoryConfigurer() {
         return new InMemoryUserDetailsManagerConfigurer<>();
-    }
+    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -61,30 +60,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 /*http
                 .requiresChannel().anyRequest().requiresSecure();*/
 
-
     }
 
     @Bean
     public DaoAuthenticationProvider authProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setPasswordEncoder(passwordEncoder());
-        authProvider.setUserDetailsService(this.userPrincipalDetailsService);
+        authProvider.setUserDetailsService(this.userDetailsService);
         return authProvider;
     }
 
-/*@Bean
+@Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }*/
+    }
 
 /*@Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }*/
 
-    @Bean
+   /* @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
+    }*/
 
 }

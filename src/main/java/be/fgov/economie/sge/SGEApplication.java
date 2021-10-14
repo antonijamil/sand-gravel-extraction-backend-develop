@@ -31,7 +31,7 @@ public class SGEApplication {
         SpringApplication.run(SGEApplication.class, args);
     }
 
-    /*@Bean
+    @Bean
     public ServletWebServerFactory servletContainer() {
         // Enable SSL Trafic
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
@@ -55,14 +55,14 @@ public class SGEApplication {
     port 8080. With SSL it will use port 8443. So, any request for 8080 needs to be
     redirected to HTTPS on 8443.
      */
-    /*private Connector httpToHttpsRedirectConnector() {
+    private Connector httpToHttpsRedirectConnector() {
         Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
         connector.setScheme("http");
         connector.setPort(8080);
         connector.setSecure(false);
         connector.setRedirectPort(8443);
         return connector;
-    }*/
+    }
 
     /*public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
