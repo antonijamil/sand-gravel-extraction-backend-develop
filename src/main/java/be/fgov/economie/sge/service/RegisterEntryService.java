@@ -65,7 +65,7 @@ public class RegisterEntryService {
         }
 
         RegisterEntryResponseDto response = new RegisterEntryResponseDto();
-        response.setData(this.registerEntryMapper.toDto(registerEntries.getContent()));
+        response.setData(this.registerEntryMapper.registerEntriesToRegisterEntriesDto(registerEntries.getContent()));
         response.setPage(page);
         response.setPageSize(pageSize);
 

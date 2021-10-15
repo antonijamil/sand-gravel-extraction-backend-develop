@@ -16,18 +16,28 @@ public interface RegisterEntryMapper {
 
     RegisterEntryMapper INSTANCE = Mappers.getMapper(RegisterEntryMapper.class);
 
-   // @Mapping(source = "date", target = "loadingDate")
-   // @Mapping(source = "startTime", target = "loadingStartTime")
-   // @Mapping(source = "stopTime", target = "loadingStopTime")
-    //@Mapping(source = "quantity", target = "loadedQuantity")
-    
     RegisterEntryDto registerEntryToDto (RegisterEntry registerEntry);
-
     RegisterEntry registerEntryDtoToRegisterEntry(RegisterEntryDto registerEntryDto);
+    List<RegisterEntryDto> registerEntriesToRegisterEntriesDto(List<RegisterEntry> registerEntries);
+    List<RegisterEntryDto> registerEntriesDtoToRegisterEntries(List<RegisterEntry> registerEntries);
+
+
+    default LocalDateTime map(OffsetDateTime in){
+        return in.toLocalDateTime();
+    }
+
+    default OffsetDateTime map(LocalDateTime in){
+        return OffsetDateTime.of(in, ZoneOffset.UTC);
+
+    // @Mapping(source = "date", target = "loadingDate")
+    // @Mapping(source = "startTime", target = "loadingStartTime")
+    // @Mapping(source = "stopTime", target = "loadingStopTime")
+    //@Mapping(source = "quantity", target = "loadedQuantity")
+
 
     //@Mapping(source = "dateTime", target = "loadingDate")
     //@Mapping(source = "dateTime", target = "loadingTime")
-    List<RegisterEntryDto> toDto(List<RegisterEntry> registerEntries);
+
     /*@Named("dtoWithSeparateDate")
     public static LocalDate dateTimeToDateOnly(LocalDateTime dateTime){
         LocalDate loadingDate = dateTime.toLocalDate();
@@ -39,14 +49,7 @@ public interface RegisterEntryMapper {
         return loadingTime;
     }*/
 
-    Iterable<RegisterEntryDto> map(Iterable<RegisterEntry> registerEntries);
 
-    default LocalDateTime map(OffsetDateTime in){
-        return in.toLocalDateTime();
-    }
-
-    default OffsetDateTime map(LocalDateTime in){
-        return OffsetDateTime.of(in, ZoneOffset.UTC);
     }
 }
 
