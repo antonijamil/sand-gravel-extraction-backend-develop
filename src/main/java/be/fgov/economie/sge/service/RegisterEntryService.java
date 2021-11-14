@@ -3,6 +3,7 @@ package be.fgov.economie.sge.service;
 import be.fgov.economie.sge.exception.RestResponseEntityExceptionHandler;
 import be.fgov.economie.sge.model.*;
 import be.fgov.economie.sge.model.dto.RegisterEntryDto;
+import be.fgov.economie.sge.model.dto.UserDto;
 import be.fgov.economie.sge.model.dto.response.RegisterEntryResponseDto;
 import be.fgov.economie.sge.repository.UnloadingRepository;
 import org.mapstruct.factory.Mappers;
@@ -27,11 +28,14 @@ public class RegisterEntryService {
     private final RegisterEntryRepository registerEntryRepository;
     private final RegisterEntryMapper registerEntryMapper;
     private final UnloadingRepository unloadingRepository;
+    private final UserService userService;
 
-    public RegisterEntryService(RegisterEntryRepository registerEntryRepository, UnloadingRepository unloadingRepository) {
+    public RegisterEntryService(RegisterEntryRepository registerEntryRepository,
+                                UnloadingRepository unloadingRepository, UserService userService) {
         this.registerEntryRepository = registerEntryRepository;
         this.unloadingRepository = unloadingRepository;
         this.registerEntryMapper = Mappers.getMapper(RegisterEntryMapper.class);
+        this.userService = userService;
     }
 
     public Optional<RegisterEntryDto> getRegisterEntryById(Integer id) {
@@ -43,37 +47,30 @@ public class RegisterEntryService {
         return result;
     }
 
-    public RegisterEntryResponseDto getRegisterEntriesByParams(Integer id, Long tripNumber, Integer shipId, Integer captainId,
-                                                             Integer concessionHolderNumber, Integer loadingSiteId,
-                                                             LocalDateTime startDateTime, LocalDateTime stopDateTime,
-                                                             Integer loadedQuantity, String destination, String destinationCountry,
-                                                             Integer page, Integer pageSize, String sortField) {
-
+    public RegisterEntryResponseDto getRegisterEntriesByParams(Integer id, Long tripNumber, Integer shipId, String username,                                                      Integer concessionHolderNumber, Integer loadingSiteId,
+                                                               LocalDateTime startDateTime, LocalDateTime stopDateTime,
+                                                               Integer loadedQuantity, String deviantVolume, String destination, String destinationCountry,
+                                                               Integer page, Integer pageSize, String sortField) {
         Page<RegisterEntry> registerEntries;
-
+        UserDto user = userService.findByUsername(username);
         if (destination==null || destination.isEmpty()) {
-           registerEntries = registerEntryRepository.findRegisterEntryByParams(id, tripNumber, shipId,
-                    captainId, concessionHolderNumber, loadingSiteId, startDateTime, stopDateTime, loadedQuantity,
+            registerEntries = registerEntryRepository.findRegisterEntryByParams(id, tripNumber, shipId,
+                    user.getId(), concessionHolderNumber, loadingSiteId, startDateTime, stopDateTime, loadedQuantity,
                     PageRequest.of(page, pageSize, Sort.by(sortField).ascending()));
-
 
         } else {
             registerEntries = registerEntryRepository.findRegisterEntryByParams(id, tripNumber, shipId,
-                    captainId, concessionHolderNumber, loadingSiteId, startDateTime, stopDateTime, loadedQuantity, destination,
+                    user.getId(), concessionHolderNumber, loadingSiteId, startDateTime, stopDateTime,
+                    loadedQuantity, deviantVolume, destination,
                     destinationCountry,  PageRequest.of(page, pageSize, Sort.by(sortField).ascending()));
-
         }
-
         RegisterEntryResponseDto response = new RegisterEntryResponseDto();
         response.setData(this.registerEntryMapper.registerEntriesToRegisterEntriesDto(registerEntries.getContent()));
         response.setPage(page);
         response.setPageSize(pageSize);
-
         //There should not be more than 2E9 elements in the database...
         response.setTotal((int)registerEntries.getTotalElements());
-
         return response;
-
     }
 
     public RegisterEntryDto saveRegisterEntry(RegisterEntryDto registerEntryDto) {

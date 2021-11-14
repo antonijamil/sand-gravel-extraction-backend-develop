@@ -25,7 +25,7 @@ public class RegisterEntryDto {
     private Integer loadedQuantity;
     private String deviantVolume;
 
-    private CaptainDto captain;
+    private UserDto user;
     private ConcessionHolderDto concessionHolder;
     private LoadingSiteDto loadingSite;
     private ShipDto ship;

@@ -13,7 +13,5 @@ public class UserDto {
     private String name;
     private String address;
     private Integer active;
-    private String roles;
-    private String permissions;
 
 }

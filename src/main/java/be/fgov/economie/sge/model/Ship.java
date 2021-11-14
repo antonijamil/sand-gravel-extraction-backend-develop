@@ -23,35 +23,4 @@ public class Ship {
     @OneToMany(mappedBy = "ship")
     private List<RegisterEntry> registerEntries;
 
-    /*public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setImo(Long imo) {
-        this.imo = imo;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setHopperVolume(Long hopperVolume) {
-        this.hopperVolume = hopperVolume;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getImo() {
-        return imo;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Long getHopperVolume() {
-        return hopperVolume;
-    }*/
 }

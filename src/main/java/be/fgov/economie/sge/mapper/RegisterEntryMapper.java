@@ -21,7 +21,6 @@ public interface RegisterEntryMapper {
     List<RegisterEntryDto> registerEntriesToRegisterEntriesDto(List<RegisterEntry> registerEntries);
     List<RegisterEntryDto> registerEntriesDtoToRegisterEntries(List<RegisterEntry> registerEntries);
 
-
     default LocalDateTime map(OffsetDateTime in){
         return in.toLocalDateTime();
     }

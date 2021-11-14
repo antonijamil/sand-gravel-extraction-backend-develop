@@ -8,11 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -35,5 +33,11 @@ public class UserController {
     public ResponseEntity<UserDto> saveUser(@RequestBody UserDto userDto) {
         UserDto createdUserDto = userService.registerNewUser(userDto);
         return ResponseEntity.ok(createdUserDto);
+    }
 
-    }}
+    @GetMapping(value = "/current-user")
+    @ResponseBody
+    public UserDto currentUser(Principal principal) {
+        return userService.findByUsername(principal.getName());
+    }
+}

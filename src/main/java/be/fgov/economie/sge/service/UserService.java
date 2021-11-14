@@ -2,11 +2,10 @@ package be.fgov.economie.sge.service;
 
 import be.fgov.economie.sge.mapper.UserMapper;
 import be.fgov.economie.sge.model.User;
-import be.fgov.economie.sge.model.dto.CaptainDto;
 import be.fgov.economie.sge.model.dto.UserDto;
 import be.fgov.economie.sge.repository.UserRepository;
 import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,30 +29,25 @@ public class UserService {
         return usersDto;
     }
 
-
     private PasswordEncoder passwordEncoder;
 
     public UserDto registerNewUser(UserDto userDto) {
         User user = userMapper.userDtoToUser(userDto);
-        /*user.setName(userDto.getName());
-        user.setAddress(userDto.getAddress());
-        user.setUsername(userDto.getUsername());
-        user.setActive(userDto.getActive());
-        user.setRoles(userDto.getRoles());
-        user.setPermissions((userDto.getPermissions()));*/
-        System.out.println("************");
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setActive(1);
         User saved = this.userRepository.save(user);
 
         return userMapper.userToUserDto(saved);
     }
 
-    /*public UserDto saveUser (UserDto userDto) {
+    public UserDto findByUsername(String username){
+        User user = userRepository.findByUsername(username);
+        if(user == null){
+            throw new UsernameNotFoundException("User not found");
+        }
+        user.setPassword(null);
+        return userMapper.userToUserDto(user);
+    }
 
-        User user = userMapper.userDtoToUser(userDto);
-        User userSaved = this.userRepository.save(user);
-
-        return userMapper.userToUserDto(userSaved);
-    }*/
 }

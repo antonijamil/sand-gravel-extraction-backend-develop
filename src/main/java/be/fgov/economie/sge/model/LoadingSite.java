@@ -21,27 +21,4 @@ public class LoadingSite {
     @OneToMany(mappedBy = "loadingSite")
     private List<RegisterEntry> registerEntries;
 
-    /*public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setStatus(char status) {
-        this.status = status;
-    }
-
-    public char getStatus() {
-        return status;
-    }*/
 }

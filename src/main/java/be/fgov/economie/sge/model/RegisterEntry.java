@@ -14,10 +14,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
+//@NamedEntityGraph(name = "graph.RegisterEntryUnloading", attributeNodes = @NamedAttributeNode(value = "unloadings"))
 
 @Data
 @Entity
-//@NamedEntityGraph(name = "graph.RegisterEntryUnloading", attributeNodes = @NamedAttributeNode(value = "unloadings"))
 @NoArgsConstructor
 @Table(name="register_entry", schema = "sand_gravel")
 public class RegisterEntry {
@@ -37,8 +37,8 @@ public class RegisterEntry {
     private String deviantVolume;
 
     @ManyToOne
-    @JoinColumn(name = "captain_id")
-    private Captain captain;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "concession_holder_id")
@@ -55,88 +55,4 @@ public class RegisterEntry {
     @OneToMany (mappedBy = "registerEntry", cascade = CascadeType.ALL)
     private List<Unloading> unloadings;
 
-
-
-
-
-    /*public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setTripNumber(Long tripNumber) {
-        this.tripNumber = tripNumber;
-    }
-
-    public Long getTripNumber() {
-        return tripNumber;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setStartTime(Time startTime) {
-        this.startTime = startTime;
-    }
-
-    public Time getStartTime() {
-        return startTime;
-    }
-
-    public void setStopTime(Time stopTime) {
-        this.stopTime = stopTime;
-    }
-
-    public Time getStopTime() {
-        return stopTime;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setDeviantVolume(String deviantVolume) {
-        this.deviantVolume = deviantVolume;
-    }
-
-    public String getDeviantVolume() {
-        return deviantVolume;
-    }
-
-    public void setCaptain(Captain captain) {
-        this.captain = captain;
-    }
-
-    public Captain getCaptain() {
-        return captain;
-    }
-
-    public void setConcessionHolder(ConcessionHolder concessionHolder) {
-        this.concessionHolder = concessionHolder;
-    }
-
-    public ConcessionHolder getConcessionHolder() {
-        return concessionHolder;
-    }
-
-    public void setLoadingSiteID(LoadingSite loadingSiteID) {
-        this.loadingSite = loadingSite;
-    }
-
-    public LoadingSite getLoadingSiteID() {
-        return loadingSite;
-    }
-*/
 }

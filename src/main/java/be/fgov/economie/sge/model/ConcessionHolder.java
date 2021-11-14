@@ -23,43 +23,4 @@ public class ConcessionHolder {
     @OneToMany(mappedBy = "concessionHolder")
     private List<RegisterEntry> registerEntries;
 
-    /*public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setNumber(Long number) {
-        this.number = number;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setRegisterEntry(RegisterEntry registerEntry) {
-        this.registerEntry = registerEntry;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getNumber() {
-        return number;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public RegisterEntry getRegisterEntry() {
-        return registerEntry;
-    }*/
 }

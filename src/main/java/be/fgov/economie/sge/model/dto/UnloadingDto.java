@@ -12,6 +12,5 @@ public class UnloadingDto {
     private String destination;
     private Long unloadedVolume;
     private String unloadingPlace;
-    //private RegisterEntryDto registerEntry;
-    //private RegisterEntryDto registerEntryDto;
+
 }

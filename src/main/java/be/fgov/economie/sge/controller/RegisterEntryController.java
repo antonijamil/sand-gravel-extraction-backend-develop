@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,7 +21,6 @@ import java.util.List;
 public class RegisterEntryController {
 
     private final RegisterEntryService registerEntryService;
-
     private static final String DEFAULT_PAGE = "0";
     private static final String DEFAULT_PAGE_SIZE = "10";
     private static final String DEFAULT_SORT_ORDER = "tripNumber";
@@ -48,7 +48,6 @@ public class RegisterEntryController {
             @RequestParam(value = "id", required = false) Integer registerEntryId,
             @RequestParam(value = "tripNumber", required = false) Long tripNumber,
             @RequestParam(value = "shipId", required = false) Integer shipId,
-            @RequestParam(value = "captainId", required = false) Integer captainId,
             @RequestParam(value = "concessionHolderNumber", required = false) Integer concessionHolderNumber,
             @RequestParam(value = "loadingSiteId", required = false) Integer loadingSiteId,
             @RequestParam(value = "startDateTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
@@ -56,13 +55,15 @@ public class RegisterEntryController {
             @RequestParam(value = "loadedQuantity", required = false) Integer quantity,
             @RequestParam(value = "deviantVolume", required = false) String deviantVolume,
             @RequestParam(value = "destinationCountry", required = false) String destinationCountry,
-            @RequestParam(value = "destination", required = false) String destination
+            @RequestParam(value = "destination", required = false) String destination,
+            Principal principal
 
     ) {
 
         RegisterEntryResponseDto response = registerEntryService.getRegisterEntriesByParams(registerEntryId,
-                tripNumber, shipId, captainId, concessionHolderNumber, loadingSiteId, startDateTime, stopDateTime, quantity,
-                destination, destinationCountry,  page, pageSize, sort);
+                tripNumber, shipId, principal.getName(), concessionHolderNumber, loadingSiteId, startDateTime,
+                stopDateTime,
+                quantity, deviantVolume, destination, destinationCountry,  page, pageSize, sort);
 
         return ResponseEntity.ok(response);
     }
